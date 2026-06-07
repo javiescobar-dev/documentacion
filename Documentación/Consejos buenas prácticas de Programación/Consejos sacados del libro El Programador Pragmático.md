@@ -76,3 +76,116 @@ public class CuentaBancaria {
 }
 
 ```
+
+#### Patrón Observer y Sub/Pub:
+##### El Patrón Observer:
+
+Imagina que estás en una clase y le dices al profesor: _"Por favor, avíseme cuando entregue las notas"_. El profesor anota tu nombre en su lista. Cuando las notas están listas, el profesor lee su lista y le avisa directamente a cada alumno.
+
+En este patrón, el objeto que cambia de estado (el **Sujeto**) tiene una **lista directa de los objetos que quieren ser notificados** (los **Observadores**). El Sujeto y los Observadores **se conocen directamente**.
+
+**Caso de uso ideal:** Interfaces gráficas de usuario (GUI). Por ejemplo, tienes un modelo de datos con la temperatura actual y un botón en la pantalla que muestra esa temperatura. El botón "observa" al modelo; cuando el modelo cambia, le avisa directamente al botón para que se actualice.
+
+Ejemplo en Java:
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+// 1. Interfaz del Observador
+interface Observer {
+    void update(String message);
+}
+
+// 2. El Sujeto (El que es observado)
+class Subject {
+    private List<Observer> observers = new ArrayList<>();
+
+    // Añadir observadores a la lista
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    // Notificar a todos directamente
+    public void notifyObservers(String message) {
+        for (Observer o : observers) {
+            o.update(message);
+        }
+    }
+}
+
+// 3. Uso
+public class ObserverExample {
+    public static void main(String[] args) {
+        Subject sensorDeTemperatura = new Subject();
+
+        // Creamos un observador (ej. una pantalla)
+        Observer pantalla = message -> System.out.println("Pantalla actualizó: " + message);
+
+        sensorDeTemperatura.addObserver(pantalla); // Se conocen directamente
+        sensorDeTemperatura.notifyObservers("La temperatura es 25°C");
+    }
+}
+```
+
+##### El Patrón Publish-Subscribe (Pub/Sub):
+
+Imagina ahora un tablón de anuncios en la universidad. El profesor no tiene una lista de alumnos; simplemente va y cuelga las notas en la sección "Física". Tú, por tu lado, te suscribes leyendo la sección "Física" del tablón. El profesor no sabe quién lee el tablón, y a ti no te importa quién colgó el papel, solo te importa el mensaje.
+
+Aquí hay un intermediario llamado **Broker de Mensajes** o **Bus de Eventos**. Los **Publicadores** envían mensajes al broker, y los **Suscriptores** leen del broker. **Nunca se conocen entre sí**.
+
+**Caso de uso ideal:** Sistemas desacoplados o microservicios. Por ejemplo, en una tienda online, cuando un usuario hace una compra, el servicio de pagos publica un evento "CompraRealizada". El servicio de emails y el servicio de inventario están suscritos a ese evento y reaccionan, sin que el servicio de pagos sepa que existen.
+
+Ejemplo en Java:
+```java
+import java.util.*;
+
+// 1. El Intermediario (Message Broker / Event Bus)
+class EventBus {
+    // Mapa de "Temas" (Topics) a listas de suscriptores
+    private Map<String, List<Subscriber>> topics = new HashMap<>();
+
+    public void subscribe(String topic, Subscriber sub) {
+        topics.putIfAbsent(topic, new ArrayList<>());
+        topics.get(topic).add(sub);
+    }
+
+    public void publish(String topic, String message) {
+        if (topics.containsKey(topic)) {
+            for (Subscriber sub : topics.get(topic)) {
+                sub.receive(message);
+            }
+        }
+    }
+}
+
+// 2. Interfaz del Suscriptor
+interface Subscriber {
+    void receive(String message);
+}
+
+// 3. Uso
+public class PubSubExample {
+    public static void main(String[] args) {
+        EventBus bus = new EventBus(); // El intermediario
+
+        // Creamos suscriptores
+        Subscriber emailService = msg -> System.out.println("Enviando email: " + msg);
+        Subscriber inventoryService = msg -> System.out.println("Actualizando inventario: " + msg);
+
+        // Se suscriben a un tema en el bus (no al publicador)
+        bus.subscribe("compra_realizada", emailService);
+        bus.subscribe("compra_realizada", inventoryService);
+
+        // Un publicador anónimo envía un mensaje al bus
+        bus.publish("compra_realizada", "Orden #1234 pagada");
+    }
+}
+```
+
+##### Diferencias clave entre el patrón Observer y Pub/Sub:
+| **Característica** | **Observer**                                                                                                | **Publish-Subscribe**                                                              |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Acoplamiento**   | Medio/Alto (El sujeto y el observador se conocen).                                                          | Muy Bajo (No se conocen, solo conocen al intermediario).                           |
+| **Intermediario**  | No existe. Comunicación directa.                                                                            | Sí (Event Bus o Message Broker).                                                   |
+| **Sincronía**      | Generalmente **síncrono** (el sujeto se bloquea hasta que todos los observadores terminan de actualizarse). | Generalmente **asíncrono** (el publicador dispara el mensaje y sigue con su vida). |
+| **Escala**         | Aplicaciones en un mismo espacio de memoria (dentro del mismo programa).                                    | Sistemas grandes, aplicaciones distribuidas, microservicios.                       |
