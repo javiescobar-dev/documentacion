@@ -11,7 +11,7 @@ Esto es también muy útil para verificar si todo esta funcionando como debería
 
 - **Invariantes de clases:** condiciones que siempre deben ser verdaderas para un objeto desde la perspectiva de alguien que lo observa desde fuera. Pueden cambiar mientras la función está haciendo su trabajo interno, pero deben ser ciertas antes de que el método empiece y justo cuando el método termina. Son las "leyes de la física" de ese objeto.
 
-Ejemplo en Java:
+##### Ejemplo en Java:
 
 ```java
 public class CuentaBancaria {
@@ -77,6 +77,73 @@ public class CuentaBancaria {
 
 ```
 
+#### Maquina de Estados Finitos (FMS):
+
+Modelo donde un sistema solo puede estar en **un estado a la vez**. Solo reacciona a ciertos eventos dependiendo del estado en el que se encuentre, y esos eventos determinan a qué nuevo estado cambiará.
+
+Ejemplo: Torniquete del metro (máquina con barras giratorias). Un torniquete solo puede estar en un número limitado (finito) de situaciones o **"Estados"**:
+1. **Bloqueado** (No te deja pasar).
+2. **Desbloqueado** (Te deja pasar).
+
+Para cambiar de un estado a otro, tiene que ocurrir un **"Evento"** (o transición):
+- Si está **Bloqueado** y el evento es _Insertar Moneda_, pasa al estado **Desbloqueado**.
+- Si está **Bloqueado** y el evento es _Empujar_, sigue **Bloqueado** (y no pasas).
+- Si está **Desbloqueado** y el evento es _Empujar_, pasas y vuelve al estado **Bloqueado**.
+- Si está **Desbloqueado** y el evento es _Insertar Moneda_, sigue **Desbloqueado** (quizás te devuelve la moneda extra).
+##### Casos de Uso Ideales
+- **Videojuegos:** Controlar el comportamiento de un personaje. Un personaje puede estar en estado `Reposo`, `Corriendo`, o `Saltando`. No puedes pasar de `Reposo` a `Saltando` sin presionar el botón de salto.
+- **Procesamiento de Pedidos (E-commerce):** Un pedido pasa por estados estrictos: `Pendiente de Pago` -> `Pagado` -> `Enviado` -> `Entregado`. La FSM asegura que no puedas "Enviar" un pedido que no ha sido "Pagado".
+- **Interfaces de Usuario complejas:** Asistentes paso a paso (Wizards) o validación de formularios dinámicos.
+##### Ejemplo en Java:
+
+```java
+public class Torniquete {
+
+    // 1. Definimos los Estados posibles
+    public enum Estado {
+        BLOQUEADO,
+        DESBLOQUEADO
+    }
+
+    // 2. Definimos el estado inicial
+    private Estado estadoActual = Estado.BLOQUEADO;
+
+    // 3. Metodo para procesar eventos
+    public void procesarEvento(String evento) {
+        System.out.println("Evento recibido: " + evento);
+
+        switch (estadoActual) {
+            case BLOQUEADO:
+                if (evento.equals("INSERTAR_MONEDA")) {
+                    System.out.println("-> Moneda aceptada. Desbloqueando...");
+                    estadoActual = Estado.DESBLOQUEADO;
+                } else if (evento.equals("EMPUJAR")) {
+                    System.out.println("-> El torniquete no se mueve. Introduce moneda.");
+                }
+                break;
+            case DESBLOQUEADO:
+                if (evento.equals("EMPUJAR")) {
+                    System.out.println("-> Persona pasa. Bloqueando de nuevo...");
+                    estadoActual = Estado.BLOQUEADO;
+                } else if (evento.equals("INSERTAR_MONEDA")) {
+                    System.out.println("-> Ya está desbloqueado. Moneda devuelta.");
+                }
+                break;
+        }
+        System.out.println("Estado actual: " + estadoActual + "\n");
+    }
+
+    // Uso
+    public static void main(String[] args) {
+        Torniquete miTorniquete = new Torniquete();
+
+        miTorniquete.procesarEvento("EMPUJAR");         // Falla, esta bloqueado
+        miTorniquete.procesarEvento("INSERTAR_MONEDA"); // Desbloquea
+        miTorniquete.procesarEvento("INSERTAR_MONEDA"); // Devuelve la moneda
+        miTorniquete.procesarEvento("EMPUJAR");         // Pasa y bloquea
+    }
+}
+```
 #### Patrón Observer y Sub/Pub:
 ##### El Patrón Observer:
 
@@ -86,7 +153,8 @@ En este patrón, el objeto que cambia de estado (el **Sujeto**) tiene una **list
 
 **Caso de uso ideal:** Interfaces gráficas de usuario (GUI). Por ejemplo, tienes un modelo de datos con la temperatura actual y un botón en la pantalla que muestra esa temperatura. El botón "observa" al modelo; cuando el modelo cambia, le avisa directamente al botón para que se actualice.
 
-Ejemplo en Java:
+###### Ejemplo en Java:
+
 ```java
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +203,8 @@ Aquí hay un intermediario llamado **Broker de Mensajes** o **Bus de Eventos**. 
 
 **Caso de uso ideal:** Sistemas desacoplados o microservicios. Por ejemplo, en una tienda online, cuando un usuario hace una compra, el servicio de pagos publica un evento "CompraRealizada". El servicio de emails y el servicio de inventario están suscritos a ese evento y reaccionan, sin que el servicio de pagos sepa que existen.
 
-Ejemplo en Java:
+###### Ejemplo en Java:
+
 ```java
 import java.util.*;
 

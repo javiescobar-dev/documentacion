@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Git/Comandos Git.md",
+                "file": "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Comandos Git"
+              "title": "Consejos sacados del libro El Programador Pragmático"
             }
           }
         ]
@@ -203,11 +203,11 @@
   },
   "active": "4181e017402cfb74",
   "lastOpenFiles": [
+    "Git/Comandos Git.md",
     "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
     "Python/Snippets Python básicos.md",
     "Consejos buenas prácticas de Programación",
     "Kotlin/Snippets Kotlin.md",
-    "Git/Comandos Git.md",
     "Git",
     "Python",
     "Bienvenido.md",
