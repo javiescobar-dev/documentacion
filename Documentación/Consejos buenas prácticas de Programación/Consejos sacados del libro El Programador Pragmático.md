@@ -258,3 +258,136 @@ public class PubSubExample {
 | **Intermediario**  | No existe. Comunicación directa.                                                                            | Sí (Event Bus o Message Broker).                                                   |
 | **Sincronía**      | Generalmente **síncrono** (el sujeto se bloquea hasta que todos los observadores terminan de actualizarse). | Generalmente **asíncrono** (el publicador dispara el mensaje y sigue con su vida). |
 | **Escala**         | Aplicaciones en un mismo espacio de memoria (dentro del mismo programa).                                    | Sistemas grandes, aplicaciones distribuidas, microservicios.                       |
+
+#### Alternativas a la Herencia:
+
+##### Interfaces / Protocolos:
+
+Las interfaces definen un **contrato**. Especifican _qué_ métodos o propiedades debe tener obligatoriamente una clase, pero no dicen _cómo_ deben funcionar (no proveen código real de forma predeterminada). La clase que "firma" este contrato está obligada a escribir la implementación (el código interno) de esos métodos.
+
+**La analogía del Contrato:** Imagina un contrato para el puesto de "Repartidor". El contrato exige que el empleado sepa `entregarPaquete()`. Al sistema (el jefe) le da absolutamente igual si el repartidor es un humano en bicicleta o un dron volador de última generación; siempre que ambos firmen el contrato y tengan el método `entregarPaquete()`, el jefe puede ponerlos a trabajar sin preocuparse de sus detalles internos.
+
+**Ejemplo en TypeScript/Java:**
+
+```java
+// Definimos el contrato (QUE hay que hacer, no el como)
+interface Repartidor {
+    entregarPaquete(destino: string): void;
+}
+
+// El Humano firma el contrato y define su propia forma de hacerlo
+class Humano implements Repartidor {
+    entregarPaquete(destino: string) {
+        console.log(`Pedaleando en bicicleta y sudando hacia ${destino}`);
+    }
+}
+
+// El Dron firma el mismo contrato, pero lo hace a su manera
+class Dron implements Repartidor {
+    entregarPaquete(destino: string) {
+        console.log(`Volando en línea recta a 60km/h hacia ${destino}`);
+    }
+}
+
+// POLIMORFISMO: Podemos agruparlos porque el lenguaje sabe que ambos cumplen el contrato
+const misRepartidores: Repartidor[] = [new Humano(), new Dron()];
+
+for (let repartidor of misRepartidores) {
+    // Al sistema le da igual quién es quien. Sabe que el metodo existe.
+    repartidor.entregarPaquete("Calle Mayor 123");
+}
+```
+
+**¿Por qué es mejor?**
+- **Polimorfismo seguro:** Puedes tratar objetos de clases completamente distintas (un Humano y un Dron, que no comparten ningún "árbol genealógico") de forma estandarizada.
+- **Desacoplamiento brutal:** Tu código principal no depende de implementaciones concretas, sino de abstracciones. Si mañana inventas un `RepartidorRobotico`, el código que gestiona la lista de repartidores no tendrá que cambiar ni una sola línea.
+- **Facilita el Testing:** Al depender de interfaces, es facilísimo crear objetos falsos (_Mocks_) que simulen cumplir el contrato para probar tu código sin tener que instanciar sistemas complejos (ej. base de datos reales).
+##### Delegación:
+
+La delegación se basa en el principio de **"Favorecer la composición sobre la herencia"** (un objeto _tiene un_ componente, en lugar de _ser un_ componente).
+
+En lugar de heredar los métodos de otra clase, la clase guarda una instancia de esa otra clase y le "pasa la pelota" (delega) cuando le piden hacer algo.
+
+**La analogía del Jefe:** Imagina que eres el gerente de un restaurante. Un cliente te pide que cocines una pizza. La clase `Gerente` no hereda de la clase `Cocinero`. En su lugar, **_tiene_ un empleado que es cocinero**, y cuando el cliente te pide la pizza, el gerente **delega** la tarea al cocinero.
+- El Problema de la Herencia:
+```python
+# Un Coche NO es un Motor. Si heredas, el coche hereda cosas de motor que no tienen sentido.
+class Coche(Motor):
+    pass
+```
+
+- Solución con la Delegación:
+```python
+class Motor:
+    def arrancar(self):
+        print("Brum brum...")
+
+class Coche:
+    def __init__(self):
+        # El coche "TIENE UN" motor (Composicion)
+        self.motor = Motor()
+
+    def arrancar_coche(self):
+        # El coche "DELEGA" la accion de arrancar al motor
+        self.motor.arrancar()
+```
+
+- **¿Por qué es mejor?** Es mucho más flexible. Si mañana quieres cambiar el `Motor` por un `MotorElectrico`, puedes hacerlo fácilmente pasándoselo al coche al crearlo. Con la herencia, estarías atrapado para siempre en la jerarquía familiar del motor original.
+##### Mixins / Traits:
+
+Si las interfaces te dicen _QUÉ_ métodos debe tener tu clase (pero tú tienes que escribir el código de esos métodos cada vez), los Mixins te dan el _CÓMO_. Un Mixin es **un paquete de métodos ya implementados** que puedes "inyectar" o "mezclar" (mix-in) en cualquier clase, sin que esas clases tengan que ser de la misma familia.
+
+**La analogía del Superpoder:** Imagina que tienes una clase `Pajaro` y una clase `Avion`. Ambos pueden volar. Si usas herencia pura, tendrías que crear una clase padre `CosaQueVuela`. Pero un pájaro (animal) y un avión (vehículo) no tienen nada en común lógicamente. En lugar de eso, creas un **Mixin** llamado `HabilidadDeVolar` y se lo inyectas a ambos.
+
+Ejemplo en Ruby:
+
+```ruby
+# Definimos el Mixin (un módulo con codigo real, no solo firmas vacias)
+module HabilidadDeVolar
+    def volar
+        print("¡Estoy volando por los cielos!")
+    end
+end
+
+class Pajaro
+    # Inyectamos el Mixin
+    include HabilidadDeVolar
+end
+
+class Avion
+    # Inyectamos el mismo Mixin en una clase que no tiene nada que ver
+    include HabilidadDeVolar
+end
+
+piolin = Pajaro.new()
+piolin.volar() # Imprime: ¡Estoy volando por los cielos!
+```
+
+- **¿Por qué es mejor?**
+- **Reutilización pura:** Tienes el código escrito una sola vez (a diferencia de las interfaces donde tienes que reimplementarlo).
+- **Sin árboles genealógicos rígidos:** Evitas crear jerarquías de clases absurdas solo para compartir un método de utilidad (como guardar en base de datos, o convertir a formato JSON). Puedes "pegarle" el trait `ConvertibleAJson` a un `Usuario`, a una `Factura` o a un `Coche`.
+
+**Información adicional (podría aprovechar también el beneficio de las interfaces):**
+En muchos lenguajes modernos (como Scala con sus _Traits_, Dart con sus _Mixins_, o Swift con sus _Protocolos con implementación por defecto_), un Trait/Mixin **también actúa como una interfaz**.
+Es decir, el lenguaje reconoce el Mixin como un "tipo de dato". Por lo tanto, **sí podrías** crear una lista y meter ahí cualquier objeto que use ese Mixin.
+
+```java
+// Lista que acepta cualquier objeto que tenga el Trait "HabilidadDeVolar"
+List<HabilidadDeVolar> voladores = [Pajaro(), Avion(), Superman()];
+
+for (volador in voladores) {
+    volador.volar(); // Funciona perfectamente
+}
+```
+
+
+##### Resumen comparativo:
+
+- **Interfaz:** _"Te prometo que tendré estos métodos, pero yo mismo escribiré cómo funcionan"_.
+    **Utilidad:** Necesito que varias clases distintas compartan un contrato para tratarlas igual (polimorfismo)
+
+- **Delegación:** _"Yo no sé hacer esto, pero tengo guardado a un amigo (objeto) internamente que sí sabe, le diré que lo haga por mí"_.
+    **Utilidad:** Necesito que mi clase haga algo complejo que ya sabe hacer otro objeto, pero no quiero heredar toda su basura.
+
+- **Mixins/Traits:** _"Acabo de descargar un paquete de habilidades nuevas, me las voy a instalar para saber hacer cosas nuevas al instante"_.
+    **Utilidad:** Tengo una funcionalidad genérica ("hacer log", "convertir a JSON", "volar") que quiero "enchufar" a muchas clases que no tienen relación entre sí para no repetir código.
