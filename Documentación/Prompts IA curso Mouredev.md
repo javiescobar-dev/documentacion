@@ -1,11 +1,11 @@
 ### El arquitecto:
-**Fase:** Planificación y Diseño del sistema
+**Fase: Planificación y Diseño del sistema**
 
 Antes de escribir una sola línea de código, necesitas pensar la estructura. Este prompt convierte
 una idea vaga en un plan técnico con stack, estructura de archivos, modelo de datos y decisiones
 justificadas. Úsalo al inicio de cada proyecto o funcionalidad nueva.
 
-```
+```sh
 Actua como un arquitecto de software senior con mas de 15 anos de experiencia disenando
 sistemas escalables.
 
@@ -36,12 +36,12 @@ que has tomado y por que.
 Incluye el tipo de usuario, el problema que resuelves, y cualquier integración externa que necesites.
 
 ### El Constructor
-**Fase:** Generación de Código funcional
+**Fase: Generación de Código funcional**
 
 Cuando ya sabes que construir, necesitas código que funcione a la primera. Este prompt genera
 código limpio, modular y con manejo de errores incluido. No pide un ejemplo: pide producción.
 
-```
+```sh
 Actua como un desarrollador senior especializado en [tu lenguaje/framework. Ej: "TypeScript
 con Next.js y Prisma"].
 
@@ -75,3 +75,88 @@ encabezado. Al final, incluye una sección breve "Como probarlo" con los pasos e
 que reciba email/password, valide formato, hashee con bcrypt..." produce código que puedes
 usar directamente.
 
+### El Detective
+**Fase: Debugging y Resolución de errores**
+
+Los bugs son inevitables. Lo que no es inevitable es pasar 3 horas buscando la causa. Este
+prompt usa razonamiento paso a paso (Chain of Thought) para forzar un análisis metódico:
+hipótesis, análisis, causa raiz y solución.
+
+```sh
+Actua como un debugger experto. Necesito que analices un problema en mi código
+de forma metódica.
+
+## El problema
+- Qué deberia pasar: [Comportamiento esperado. Ej: "El formulario deberia enviar
+los datos y redirigir a /dashboard."]
+- Qué pasa en realidad: [Comportamiento actual. Ej: "La página se recarga pero
+no redirige. No aparece error en consola."]
+- Mensaje de error (si hay): [Pega el error exacto o "No hay error visible"]
+- Cuándo ocurre: [Siempre / solo a veces / solo en produccion / etc.]
+
+## Código relevante
+``` ```
+[Pega aquí el código donde crees que esta el problema]
+``` ```
+
+## Contexto adicional
+- Lenguaje/framework: [ej: React 19, Node 22]
+- Que ya intente: [Lista lo que probaste. Esto evita sugerencias que ya descartaste]
+
+## Cómo quiero que respondas
+Sigue este proceso exacto:
+1.Hipótesis inicial: Lista 3 causas posibles ordenadas por probabilidad.
+2.Analisis linea por linea: Revisa el codigo y senala exactamente donde podría estar el fallo.
+3.Causa raiz: Identifica la causa más probable y explica POR QUÉ provoca
+el comportamiento observado.
+4.Solución: Muestra el código corregido con los cambios resaltados.
+5.Prevención: Sugiere una práctica o patron para evitar este tipo de error en el futuro.
+```
+
+**Consejo:** Incluir "que ya intente" es clave. Sin eso, la IA te sugerirá lo primero y más obvio
+(que probablemente ya probaste). Con eso, va directo a causas menos evidentes.
+
+### El Crítico
+**Fase: Revisión de Código**
+
+Tener un segundo par de ojos siempre mejora el código. Este prompt simula un code review
+riguroso: seguridad, rendimiento, mantenibilidad y puntuación. Es como tener un compañero
+senior disponible 24/7.
+
+```sh
+Actúa como un code reviewer senior exigente pero constructivo. Revisa el siguiente
+código como si fuera un Pull Request en un equipo profesional.
+
+## Código relevante
+``` ```
+[Pega aquí tu código]
+``` ```
+
+## Contexto
+- Lenguaje/framework: [ej: Python con FastAPI]
+- Que hace este código: [breve descripción de la funcionalidad]
+- Es código de: [API / frontend / servicio / script / etc.]
+
+## Analiza cada una de estas dimensiones
+1.Seguridad: Hay vulnerabilidades? (inyección SQL, XSS, exposición de datos sensibles,
+secrets hardcodeados, etc.)
+2.Rendimiento: Hay cuellos de botella? (queries N+1, operaciones O(n2), cargas innecesarias...)
+Al final, da una puntuación global de 1 a 10 con un resumen de una linea.
+Cierra con los 3 cambios de mayor impacto que harías si solo pudieras cambiar 3 cosas.
+3.Código limpio: Cumple con el principio de responsabilidad única? Los nombres
+son descriptivos? Hay duplicación?
+4.Patrones y estructura: Usa patrones adecuados? La estructura es coherente con el framework?
+5.Manejo de errores: Gestiona los edge cases? Los errores se manejan o se tragan
+silenciosamente?
+
+## Formato de respuesta
+Para cada dimensión:
+- Estado: Bien / Mejorable / Problema
+- Si hay problema: explica que, donde y muestra el código corregido.
+
+Al final, da una puntuación global de 1 a 10 con un resumen de una linea.
+Cierra con los 3 cambios de mayor impacto que harías si solo pudieras cambiar 3 cosas.
+```
+
+**Consejo:** Úsalo también con código que crees que "ya esta bien". Los problemas de seguridad
+y rendimiento rara vez son obvios para quien escribió el código.
