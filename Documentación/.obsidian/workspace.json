@@ -42,12 +42,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Prompts IA curso Mouredev.md",
+                "file": "Git/Comandos Git.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Prompts IA curso Mouredev"
+              "title": "Comandos Git"
             }
           }
         ],
@@ -232,8 +232,8 @@
   },
   "active": "af0ca624ffa6b18e",
   "lastOpenFiles": [
-    "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
     "Prompts IA curso Mouredev.md",
+    "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
     "Prompts IA",
     "Git/Comandos Git.md",
     "Kotlin/Snippets Kotlin.md",
