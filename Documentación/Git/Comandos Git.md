@@ -103,10 +103,14 @@ git config --global alias.tree "log --graph --decorate --all --oneline"
 # una vez almacenado, al utilizar git nombre_alias, en este caso git tree, ejecuta el comando que guardamos entre comillas, simplificando su uso
 ```
 
-#### Ver los cambios pendientes de añadir a un commit:
+#### Ver los cambios pendientes de añadir a un commit o de diferentes ramas:
 
 ```sh
+# para ver los cambios pendientes a añadir
 git diff
+
+# para ver diferencias entre la rama actual y otra
+git diff otra_rama
 ```
 
 #### Ver todo el historial de commits realizados en git:
@@ -135,10 +139,45 @@ git branch nombre_rama
 git switch nombre_rama
 ```
 
+#### Eliminar una rama:
+
+```sh
+git branch -d nombre-rama
+
+# aunque la rama se borre, en git reflog persisten los commits, podemos rescatarlos aunque no esten en la rama como tal
+```
 #### Fusionar cambios de dos ramas:
 
 ```sh
 # fusiona la rama actual con la rama que indiques en el comando
 # al ejecutar el comando hay que añadir el nombre de un nuevo commit que se crea
 git merge rama_a_fusionar
+```
+
+#### Almacenar o guardar cambios que no quieres añadir a un commit todavia para mantenerlos y poder cambiar de rama:
+
+```sh
+# esto almacenaria de forma temporal los cambios
+git stash
+
+# ahora podrias cambiar de rama
+git switch main
+
+# haces lo que tengas que haces y vuelves a la rama previa
+git switch login
+
+# y recuperamos los cambios almacenados temporalmente (los ultimos, como una pila de platos)
+git stash pop
+
+# para ver la lista de stash que tienes
+git stash list
+
+# quitar el ultimo stash almacenado en la lista (pero sin recuperar los cambios)
+git stash drop
+
+# quitar un stash especifico de la lista de stash almacenados (sin recuperar cambios) donde el valor 1 corresponderia al valor que te muestra git stash list
+git stash drop stash@{1}
+
+# para limpiar toda la lista de stash almacenados
+git stash clear
 ```
