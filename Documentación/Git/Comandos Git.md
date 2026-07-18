@@ -1,4 +1,7 @@
 
+### Guía de referencia de comandos:
+https://training.github.com/downloads/es_ES/github-git-cheat-sheet/
+
 #### Configurar git:
 
 ```sh
@@ -181,3 +184,45 @@ git stash drop stash@{1}
 # para limpiar toda la lista de stash almacenados
 git stash clear
 ```
+
+#### Generar una nueva clave SSH:
+
+```sh
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+#### Enlazar repositorio local con Github:
+
+```sh
+git remote add origin url_repositorio
+```
+
+#### Subir ficheros a Github:
+
+```sh
+# origin seria el repositorio remoto que tengas (puedes tener varios con git remote)
+# main es la rama a la que quieres subir los cambios en ese repositorio remoto
+git push origin main
+```
+
+#### Sincronizar repositorio local con repositorio remoto:
+
+```sh
+# mismo que el anterior sobre origin y main
+# con esto obtenemos los cambios, pero no se aplican directamente, solo descargamos el log/historial de los cambios en esa rama
+git fetch origin main
+
+# una vez descargado el historial de cambios utilizamos git pull para aplicar los cambios en el repo local
+# importante tener en cuenta que si tenemos diferencias debemos corregirlas
+git pull origin main
+```
+
+#### Clonar un repositorio remoto
+
+```sh
+git clone url_repositorio_remoto
+
+# tambien podemos establecer el nombre de la carpeta raiz del repositorio al clonarse (por defecto es el nombre del repositorio remoto)
+git clone url_repositorio_remoto nombre_directorio_raiz
+```
+
