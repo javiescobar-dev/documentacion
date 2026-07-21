@@ -226,3 +226,63 @@ git clone url_repositorio_remoto
 git clone url_repositorio_remoto nombre_directorio_raiz
 ```
 
+#### Copiar un commit especifico:
+
+```sh
+git cherry-pick hash_commit
+
+# si da un error podemos corregirlo y continuar
+git cherry-pick --continue
+
+# o revertir todo
+git cherry-pick --abort
+
+# tambien es posible hacer cherry-pick de un rango especifico de commits por orden
+# esto iria haciendo cherry-pick desde el commit inical hasta el que especifiques uno por uno de forma ordenada (si da conflictos alguno podemos corregirlos y jugar con --continue --abort o --skip)
+git cherry-pick hash_inicio^..hash_final
+```
+
+#### Integrar cambios de una rama a otra manteniendo el historial limpio sin merges:
+
+```sh
+# es muy util para mantener el historial limpio sin commits extra que realiza merge
+# pero hay que tener cuidado, ya que puede alterar el historial de commits
+# obtendria los cambios de nombre_rama y los aplicaría sobre la actual
+# se puede resumir como un proceso inteligente de hacer uno o varios cherry-pick en los puntos especificos del historial para mantener los mismo commits ordenados sin ese commit adicional que hace merge, pero pudiendo alterar el hash de los commits que hay que mover para hacer hueco a los que traemos
+git rebase nombre_rama
+
+# tambien podemos jugar con continue y abort como cherry-pick
+git rebase --continue
+git rebase --abort
+```
+
+#### Comandos básicos de Gitflow:
+
+```sh
+# Rama main: rama principal que mantendría todo el flujo, no debe manipularse manualmente
+# Rama develop: rama que integra todos los pequeños cambios que se van haciendo en feature
+# Rama feature: rama que contiene subramas con cada cambio que se va a realizar (una vez completada, se fusiona en develop y se borra esa subrama)
+# Rama release: rama que contiene subramas y aplica una version especifica de develop para verificar y una vez validada fusionar los cambios a main
+# Rama hotfix: rama que contiene subramas para realizar una correccion en caliente a main, una vez completada se fusiona en main y en develop
+
+# inicializar git flow en ese repositorio (configuras los valores por defecto de los nombres de las ramas)
+git flow init
+
+# iniciar una nueva feature (se crea rama feature/nombre_feature)
+git flow feature start nombre_feature
+
+# finalizar una feature (fusiona rama feature/nombre_feature en develop y la borra)
+git flow feature finish nombre_feature
+
+# iniciar una nueva release (se crea rama release/nombre_release)
+git flow release start nombre_release
+
+# finalizar una release (fusiona rama release/nombre_release en main y develop y la borra)
+git flow release finish nombre_release
+
+# iniciar una nueva release (se crea rama hotfix/nombre_hotfix)
+git flow hotfix start nombre_hotfix
+
+# finalizar una release (fusiona rama hotfix/nombre_hotfix en main y develop y la borra)
+git flow hotfix finish nombre_hotfix
+```
