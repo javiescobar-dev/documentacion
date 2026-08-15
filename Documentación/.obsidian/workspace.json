@@ -42,12 +42,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Git/Comandos Git.md",
+                "file": "Proyecto CS50x/ARQUITECTURA.md.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Comandos Git"
+              "title": "ARQUITECTURA.md"
             }
           }
         ],
@@ -232,10 +232,12 @@
   },
   "active": "af0ca624ffa6b18e",
   "lastOpenFiles": [
+    "Proyecto CS50x",
+    "Git/Comandos Git.md",
+    "Proyecto CS50x/ARQUITECTURA.md.md",
     "Prompts IA curso Mouredev.md",
     "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
     "Prompts IA",
-    "Git/Comandos Git.md",
     "Kotlin/Snippets Kotlin.md",
     "Operaciones matemáticas.md",
     "Windows/Comandos Windows.md",
