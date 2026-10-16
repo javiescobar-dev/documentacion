@@ -42,12 +42,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Proyecto CS50x/ARQUITECTURA.md.md",
+                "file": "Master Desarrollo con IA/Ingenieria de Software/Principios SOLID.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ARQUITECTURA.md"
+              "title": "Principios SOLID"
             }
           }
         ],
@@ -88,7 +88,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Explorador de archivos"
@@ -232,21 +234,28 @@
   },
   "active": "af0ca624ffa6b18e",
   "lastOpenFiles": [
+    "Master Desarrollo con IA/Entornos virtuales/Crear un entorno virtual para proyecto en python.md",
+    "Master Desarrollo con IA/Ingenieria de Software/Principios SOLID.md",
+    "Master Desarrollo con IA/Ingenieria de Software",
+    "Master Desarrollo con IA/Entornos virtuales/Requirements.md",
+    "Master Desarrollo con IA/Aprendizaje/Tutor personalizado.md",
+    "Master Desarrollo con IA/Entornos virtuales",
+    "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
+    "Master Desarrollo con IA/Aprendizaje",
+    "Master Desarrollo con IA",
+    "Operaciones matemáticas.md",
+    "Prompts IA curso Mouredev.md",
+    "Proyecto CS50x/ARQUITECTURA.md.md",
     "Proyecto CS50x",
     "Git/Comandos Git.md",
-    "Proyecto CS50x/ARQUITECTURA.md.md",
-    "Prompts IA curso Mouredev.md",
-    "Consejos buenas prácticas de Programación/Consejos sacados del libro El Programador Pragmático.md",
     "Prompts IA",
     "Kotlin/Snippets Kotlin.md",
-    "Operaciones matemáticas.md",
     "Windows/Comandos Windows.md",
     "Windows",
     "Python/Snippets Python básicos.md",
     "Consejos buenas prácticas de Programación",
     "Git",
     "Python",
-    "Bienvenido.md",
-    "Kotlin"
+    "Bienvenido.md"
   ]
 }
