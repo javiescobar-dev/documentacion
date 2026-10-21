@@ -1,4 +1,3 @@
-# Principios SOLID
 
 SOLID son cinco principios de diseño orientado a objetos que sirven para escribir código **fácil de mantener, de extender y de testear**. No son reglas mágicas ni obligatorias: son señales para detectar cuándo un diseño se va a volver un problema con el tiempo.
 
