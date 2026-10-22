@@ -42,12 +42,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Master Desarrollo con IA/Ingenieria de Software/1- Principios SOLID.md",
-                "mode": "source",
+                "file": "Master Desarrollo con IA/Arquitectura de Software/1 - Fundamentos de Clean Architecture.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1- Principios SOLID"
+              "title": "1 - Fundamentos de Clean Architecture"
             }
           }
         ],
@@ -234,9 +234,12 @@
   },
   "active": "af0ca624ffa6b18e",
   "lastOpenFiles": [
+    "Master Desarrollo con IA/Arquitectura de Software/1 - Fundamentos de Clean Architecture.pdf",
+    "Master Desarrollo con IA/Ingenieria de Software/1- Principios SOLID.md",
+    "Master Desarrollo con IA/Arquitectura de Software/1 - Fundamentos de Clean Architecture.md",
+    "Master Desarrollo con IA/Arquitectura de Software",
     "Master Desarrollo con IA/Ingenieria de Software/4 - Antipatrones.md",
     "Master Desarrollo con IA/Ingenieria de Software/3 - Patrones de diseño.md",
-    "Master Desarrollo con IA/Ingenieria de Software/1- Principios SOLID.md",
     "Master Desarrollo con IA/Ingenieria de Software/2 - Principios DRY - KISS -YAGNI.md",
     "Master Desarrollo con IA/Entornos virtuales/Crear un entorno virtual para proyecto en python.md",
     "Master Desarrollo con IA/Ingenieria de Software",
@@ -258,7 +261,6 @@
     "Python/Snippets Python básicos.md",
     "Consejos buenas prácticas de Programación",
     "Git",
-    "Python",
     "Bienvenido.md"
   ]
 }
